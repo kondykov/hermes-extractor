@@ -13,7 +13,8 @@ RUN pip3 install hermes-dec --break-system-packages
 WORKDIR /app
 RUN mkdir -p /input /output
 
-COPY pipeline.sh /app/pipeline.sh
+COPY app/* /app/
+
 RUN chmod +x /app/pipeline.sh
 
 ENTRYPOINT ["/app/pipeline.sh"]

@@ -45,6 +45,13 @@ docker build -t hermes-extractor .
 docker run --rm -v "${PWD}/input:/input" -v "${PWD}/output:/output" hermes-extractor
 ```
 
+### Или 2 в 1
+
+```shell
+docker build -t hermes-extractor .
+docker run --rm -v "${PWD}/input:/input" -v "${PWD}/output:/output" hermes-extractor
+```
+
 ------------------------------
 
 ## 📊 Результаты работы
