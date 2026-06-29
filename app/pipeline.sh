@@ -16,36 +16,31 @@ if [ -z "$APK" ]; then
     exit 1
 fi
 
-echo "[*] Распаковка APK во временную директорию..."
+echo "[*] Распаковка APK..."
 unzip -o "$APK" -d "$TMP_DIR"
 
-echo "[*] Поиск Hermes bundle..."
-HBC=$(find "$TMP_DIR" -name "*.hbc" | head -n 1)
-JSBUNDLE=$(find "$TMP_DIR" -name "*.bundle" -o -name "*.jsbundle" | head -n 1)
+echo "[*] Поиск JS bundle..."
+BUNDLE=$(find "$TMP_DIR" -name "*.bundle" -o -name "*.jsbundle" -o -name "index.android.bundle" | head -n 1)
 
-if [ -n "$HBC" ]; then
-    BYTECODE_SOURCE="$HBC"
-elif [ -n "$JSBUNDLE" ]; then
-    /hermes/hermes-cli/build/install/hermes/bin/hermesc -emit-bc -out "$TMP_DIR/main.hbc" "$JSBUNDLE"
-    BYTECODE_SOURCE="$TMP_DIR/main.hbc"
-else
-    echo "[!] Ни HBC, ни JS bundle не найдены."
+if [ -z "$BUNDLE" ]; then
+    echo "[!] JS bundle не найден."
     exit 1
 fi
 
-echo "[*] Декомпиляция HBC → HASM..."
-hbctool disasm "$BYTECODE_SOURCE" "$OUTPUT_DIR/decompiled.hasm"
-
-echo "[*] Извлечение bytecode JSON..."
-/hermes/hermes-cli/build/install/hermes/bin/hermesc -dump-bytecode -out "$OUTPUT_DIR/bytecode.json" "$BYTECODE_SOURCE"
+echo "[*] Декомпиляция через hermes-dec..."
+hermes-dec "$BUNDLE" > "$OUTPUT_DIR/decompiled.js"
 
 echo "[*] Извлечение URL-ов..."
-python3 /app/hbctool_url_scanner.py
+python3 /app/url_scanner.py
+
+echo "[*] Извлечение методов..."
+python3 /app/method_detector.py
+
+echo "[*] Извлечение JSON-тел..."
+python3 /app/body_reconstructor.py
 
 echo "[*] Построение API-спека..."
-python3 /app/hbctool_signature_extractor.py
+python3 /app/api_spec_builder.py
 
-echo "[*] Очистка временных файлов..."
 rm -rf "$TMP_DIR"
-
 echo "[*] Готово."

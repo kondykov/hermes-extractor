@@ -6,25 +6,13 @@ RUN apt-get update && apt-get install -y \
     python3 python3-pip \
     unzip \
     git \
-    cmake \
-    build-essential \
-    openjdk-17-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка hbctool
-RUN pip3 install --break-system-packages \
-    git+https://github.com/bongtrop/hbctool.git
-
-# Установка Hermes CLI
-RUN git clone https://github.com/facebook/hermes.git /hermes
-WORKDIR /hermes
-RUN ./gradlew :hermes-cli:installDist
-
-# Добавляем hermesc в PATH
-ENV PATH="/hermes/hermes-cli/build/install/hermes/bin:${PATH}"
-
-# Директории пайплайна
+# Копируем локальный hermes-dec
 WORKDIR /app
+COPY bin/hermes-dec /usr/local/bin/hermes-dec
+RUN chmod +x /usr/local/bin/hermes-dec
+
 RUN mkdir -p /input /output
 
 COPY app/* /app/
