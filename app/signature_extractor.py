@@ -184,8 +184,10 @@ for url, info in api_spec.items():
 
 for ep, override in manual_overrides.items():
 
+    # если эндпоинта нет — создаём
     if ep not in api_spec:
         api_spec[ep] = {
+            "closed": override.get("closed", False),
             "name": override.get("name", "manual"),
             "method": override.get("method", "GET"),
             "body_fields": set(override.get("body_fields", [])),
@@ -195,6 +197,9 @@ for ep, override in manual_overrides.items():
         continue
 
     info = api_spec[ep]
+
+    # новый флаг closed
+    info["closed"] = override.get("closed", False)
 
     if "method" in override:
         info["method"] = override["method"]
@@ -241,6 +246,8 @@ with open(final_output, "w", encoding="utf-8") as out:
         out.write(f"🌐 ЭНДПОИНТ: {url}\n")
         out.write(f"   🔹 Назначение в коде : {info['name']}\n")
         out.write(f"   🔹 HTTP-Метод        : {info['method']}\n")
+        status = "closed" if info.get("closed") else "active"
+        out.write(f"   🔹 Статус эндпоинта : {status}\n")
 
         if info.get("manual_override"):
             out.write("   🔹 Источник данных   : manual override\n")
@@ -270,8 +277,8 @@ with open(diff_path, "w", encoding="utf-8") as diff:
     diff.write("# Сравнительный анализ API версий\n\n")
     diff.write("Автоматически сгенерировано Python‑конвейером\n\n")
 
-    header = "| Endpoint | Method | Payload | Query Params | " + " | ".join(versions) + " |"
-    sep = "|:---|:---:|:---:|:---:|" + "|".join([":---:" for _ in versions]) + "|"
+    header = "| Endpoint | Method | Active | Payload | Query Params | " + " | ".join(versions) + " |"
+    sep = "|:---|:---:|:---:|:---:|:---:|" + "|".join([":---:" for _ in versions]) + "|"
 
     diff.write(header + "\n")
     diff.write(sep + "\n")
@@ -294,7 +301,8 @@ with open(diff_path, "w", encoding="utf-8") as diff:
         else:
             query_anchor = "—"
 
-        row = f"| `{endpoint}` | {info['method']} | {payload_anchor} | {query_anchor} "
+        closed_flag = "❌" if info.get("closed") else "✔"
+        row = f"| `{endpoint}` | {info['method']} | {closed_flag} | {payload_anchor} | {query_anchor} "
 
         for v in versions:
             txt_file = os.path.join(output_dir, f"{v}.txt")

@@ -98,6 +98,7 @@ docker run --rm -v "${PWD}/input:/input" -v "${PWD}/output:/output" hermes-extra
 {
   "api/mobile/orders/1010/app-rating": {
     "method": "POST",
+    "closed": false,
     "name": "ratingAppManual",
     "body_fields": [
       "orderNum",
