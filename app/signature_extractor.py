@@ -20,6 +20,12 @@ if len(sys.argv) < 2:
 
 output_dir = sys.argv[1]
 
+def normalize_url(url: str) -> str:
+    if "?" in url:
+        url = url.split("?", 1)[0]
+
+    return url.strip().strip('"').strip("'")
+
 # ============================================================
 # ПАПКА ДЛЯ СПЕЦИФИКАЦИИ
 # ============================================================
@@ -54,7 +60,7 @@ for file in os.listdir(output_dir):
         version_files.append(file)
         with open(os.path.join(output_dir, file), "r", encoding="utf-8") as f:
             for line in f:
-                ep = line.strip()
+                ep = normalize_url(line.strip())
                 if ep:
                     version_endpoints.add(ep)
 
@@ -81,26 +87,31 @@ for js_path in js_files:
 
         scanned_urls = scan_endpoints(content)
         for url in scanned_urls:
+            url = normalize_url(url)
             if url not in api_spec:
                 api_spec[url] = {"name": "scanned", "method": "GET", "body_fields": set(), "query_fields": set()}
 
         closure_urls = resolve_closure_urls(content)
         for url, name in closure_urls.items():
+            url = normalize_url(url)
             if url not in api_spec:
                 api_spec[url] = {"name": name, "method": "GET", "body_fields": set(), "query_fields": set()}
 
         dynamic_urls = parse_dynamic_urls(content)
         for url in dynamic_urls:
+            url = normalize_url(url)
             if url not in api_spec:
                 api_spec[url] = {"name": "dynamic_resolved", "method": "GET", "body_fields": set(), "query_fields": set()}
 
         http_methods = detect_http_methods(content)
         for url, method in http_methods.items():
+            url = normalize_url(url)
             if url in api_spec:
                 api_spec[url]["method"] = method
 
         literal_bodies = detect_literal_bodies(content)
         for url, fields in literal_bodies.items():
+            url = normalize_url(url)
             clean_fields = {f for f in fields.keys() if not is_noise(f)}
             if url not in api_spec:
                 api_spec[url] = {"name": "literal_detected", "method": "POST", "body_fields": clean_fields, "query_fields": set()}
@@ -111,6 +122,7 @@ for js_path in js_files:
         if dynamic_params:
             clean_params = {p for p in dynamic_params if not is_noise(p)}
             for url in api_spec:
+                url = normalize_url(url)
                 if api_spec[url]["method"] == "POST":
                     api_spec[url]["body_fields"].update(clean_params)
 

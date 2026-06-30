@@ -44,7 +44,9 @@ for apk in "${APK_FILES[@]}"; do
     cp "$TMP_DIR/decompiled.js" "$OUTPUT_DIR/${APK_NAME}.js"
 
     grep -oE "[a-zA-Z0-9./?=&_\\-]*api/[a-zA-Z0-9./?=&_\\-]+" "$TMP_DIR/decompiled.js" | \
-    sed "s/\\\\\\//\\//g" | sed "s/\\\\//g" | sed "s/['\"]//g" | sort -u > "$OUTPUT_DIR/${APK_NAME}.txt"
+    sed "s/\\\\\\//\\//g" | sed "s/\\\\//g" | sed "s/['\"]//g" | \
+    sed 's/?[^ ]*//' | sort -u > "$OUTPUT_DIR/${APK_NAME}.txt"
+
 
     TARGET_TXT_FILES+=("${APK_NAME}.txt")
 
