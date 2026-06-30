@@ -1,0 +1,205 @@
+{
+  "api/mobile/orders/1010/analytics/actual-customer": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId"
+    ],
+    "notes": "mainBidderId must not be null"
+  },
+  "api/mobile/orders/1010/analytics/potential-competitor": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId"
+    ],
+    "notes": "mainBidderId must not be null"
+  },
+  "api/mobile/orders/1010/analytics/potential-customer": {
+    "method": "GET",
+    "query_fields": [],
+    "notes": "Ответ пустой, обязательных параметров нет"
+  },
+  "api/mobile/orders/1010/bidders": {
+    "method": "GET",
+    "query_fields": [
+      "page",
+      "searchString"
+    ],
+    "notes": "page, searchString must not be null"
+  },
+  "api/mobile/orders/917/analytics/lots-actual-competitor": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId",
+      "competitorId"
+    ],
+    "notes": "mainBidderId, competitorId must not be null"
+  },
+  "api/mobile/orders/917/analytics/lots-actual-customer": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId",
+      "customerId"
+    ],
+    "notes": "mainBidderId, customerId must not be null"
+  },
+  "api/mobile/orders/917/analytics/lots-potential-competitor": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId",
+      "competitorId"
+    ],
+    "notes": "mainBidderId, competitorId must not be null"
+  },
+  "api/mobile/orders/917/bidders": {
+    "method": "GET",
+    "query_fields": [
+      "searchString",
+      "page"
+    ],
+    "notes": "searchString, page must not be null"
+  },
+  "api/mobile/orders/917/analytics/lots-potential-customer": {
+    "method": "GET",
+    "query_fields": [
+      "mainBidderId",
+      "customerId"
+    ],
+    "notes": "Поля обязательные: mainBidderId, customerId"
+  },
+  "/api/mobile/news/917/detail/": {
+    "method": "N/A",
+    "notes": "Метод не бъётся"
+  },
+  "api/mobile/news/917/list/": {
+    "method": "GET",
+    "query_fields": [
+      "pageNumber",
+      "pageSize"
+    ],
+    "notes": "Параметры пагинации определены вручную"
+  },
+  "api/mobile/orders/917/favorite-purchases": {
+    "method": "GET",
+    "query_fields": [
+      "orders",
+      "date"
+    ],
+    "notes": "orders, date must not be null"
+  },
+  "api/mobile/orders/order/917/event-log/all": {
+    "method": "GET",
+    "query_fields": [
+      "fz",
+      "regNumber"
+    ],
+    "notes": "fz, regNumber must not be null"
+  },
+  "api/mobile/orders/order/917/event-log/important": {
+    "method": "GET",
+    "query_fields": [
+      "fz",
+      "regNumber"
+    ],
+    "notes": "fz, regNumber must not be null"
+  },
+  "api/mobile/orders/version": {
+    "method": "GET",
+    "query_fields": [
+      "criticalVersion"
+    ],
+    "notes": "criticalVersion must be provided"
+  },
+  "api/mobile/proxy/1320/epz/order/notice/qr/qrCode.html": {
+    "method": "GET",
+    "query_fields": [
+      "guid"
+    ],
+    "notes": "guid required"
+  },
+  "epz/api/organization/search/mobile": {
+    "method": "POST",
+    "body_fields": [],
+    "notes": "POST endpoint, body not detected"
+  },
+  "epz/api/priz-fz223/contract/contract223-block": {
+    "method": "GET",
+    "query_fields": [
+      "purchaseNoticeNumber",
+      "pageNumber",
+      "pageSize"
+    ],
+    "notes": "purchaseNoticeNumber, pageNumber, pageSize required"
+  },
+  "epz/api/priz-fz223/mobile/card/journal-version.json": {
+    "method": "GET",
+    "query_fields": [
+      "purchaseNoticeNumber"
+    ],
+    "notes": "purchaseNoticeNumber required"
+  },
+  "epz/api/priz-fz223/mobile/card/lot-info": {
+    "method": "GET",
+    "query_fields": [
+      "purchaseNoticeNumber",
+      "purchaseNoticeGuid"
+    ],
+    "notes": "purchaseNoticeNumber, purchaseNoticeGuid required"
+  },
+  "epz/api/priz-fz223/mobile/card/lot-list": {
+    "method": "GET",
+    "query_fields": [
+      "purchaseNoticeNumber",
+      "noticeGuid"
+    ],
+    "notes": "purchaseNoticeNumber, noticeGuid required"
+  },
+  "epz/api/priz/mobile/pprf615/card/common": {
+    "method": "GET",
+    "query_fields": [
+      "reestrNumber"
+    ],
+    "notes": "reestrNumber required"
+  },
+  "epz/api/priz/mobile/pprf615/card/documents": {
+    "method": "GET",
+    "query_fields": [
+      "reestrNumber"
+    ],
+    "notes": "reestrNumber required"
+  },
+  "epz/api/priz/mobile/pprf615/card/eventJournal": {
+    "method": "GET",
+    "query_fields": [
+      "reestrNumber"
+    ],
+    "notes": "reestrNumber required"
+  },
+  "epz/api/priz/mobile/priz44/card/common": {
+    "method": "GET",
+    "query_fields": [
+      "regNumber"
+    ],
+    "notes": "regNumber required"
+  },
+  "epz/api/priz/mobile/priz44/card/documents": {
+    "method": "GET",
+    "query_fields": [
+      "regNumber"
+    ],
+    "notes": "regNumber required"
+  },
+  "epz/api/priz/mobile/priz44/card/eventJournal": {
+    "method": "GET",
+    "query_fields": [
+      "regNumber"
+    ],
+    "notes": "regNumber required"
+  },
+  "epz/api/priz/mobile/priz44/card/supplierResults": {
+    "method": "GET",
+    "query_fields": [
+      "regNumber"
+    ],
+    "notes": "regNumber required"
+  }
+}

@@ -49,45 +49,11 @@ for apk in "${APK_FILES[@]}"; do
     TARGET_TXT_FILES+=("${APK_NAME}.txt")
 
     echo "    [+] Успешно сохранено -> $OUTPUT_DIR/${APK_NAME}.txt"
-    echo "    [+] Проброшен JS код   -> $OUTPUT_DIR/${APK_NAME}.js"
+    echo "    [+] Проброшен JS код  -> $OUTPUT_DIR/${APK_NAME}.js"
     rm -f "$TMP_DIR/current.bundle" "$TMP_DIR/decompiled.js"
 done
 
 echo "[+] Этап индивидуального извлечения завершен. Всего обработано APK: $TOTAL_APKS"
-
-if [ "$TOTAL_APKS" -ge 2 ]; then
-    echo "[*] Обнаружено 2 или более версий. Запуск генератора сравнительной таблицы..."
-
-    cd "$OUTPUT_DIR" || exit 1
-    OUTPUT_DIFF="API_VERSIONS_DIFF.md"
-
-    ALL_ENDPOINTS=$(cat "${TARGET_TXT_FILES[@]}" | sort -u)
-
-    HEADER="| Название эндпоинта шлюза API "
-    SEPARATOR="|:---"
-    for file in "${TARGET_TXT_FILES[@]}"; do
-        HEADER="$HEADER | ${file%.txt} "
-        SEPARATOR="$SEPARATOR |:---:"
-    done
-    HEADER="$HEADER |"
-    SEPARATOR="$SEPARATOR |"
-
-    echo "## Сравнительный анализ изменений (Diff) сетевых эндпоинтов" > "$OUTPUT_DIFF"
-    echo "Сгенерировано автоматически: $(date '+%Y-%m-%d %H:%M:%S')" >> "$OUTPUT_DIFF"
-    echo "" >> "$OUTPUT_DIFF"
-    echo "$HEADER" >> "$OUTPUT_DIFF"
-    echo "$SEPARATOR" >> "$OUTPUT_DIFF"
-
-    echo "$ALL_ENDPOINTS" | while read -r endpoint; do
-        if [ -z "$endpoint" ]; then continue; fi
-        ROW="| \`$endpoint\` "
-        for file in "${TARGET_TXT_FILES[@]}"; do
-            if grep -qF "$endpoint" "$file"; then ROW="$ROW |  ➕  "; else ROW="$ROW |  ❌  "; fi
-        done
-        echo "$ROW |" >> "$OUTPUT_DIFF"
-    done
-    echo "[+] Сравнительная таблица успешно создана -> $OUTPUT_DIFF"
-fi
 
 echo "[*] Запуск глубокого статического анализа сигнатур..."
 if [ -f "/app/signature_extractor.py" ]; then
