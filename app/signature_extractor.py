@@ -275,7 +275,7 @@ all_endpoints = sorted(version_endpoints)
 
 with open(diff_path, "w", encoding="utf-8") as diff:
     diff.write("# Сравнительный анализ API версий\n\n")
-    diff.write("Автоматически сгенерировано Python‑конвейером\n\n")
+    diff.write("Автоматически сгенерировано\n\n")
 
     header = "| Endpoint | Method | Active | Payload | Query Params | " + " | ".join(versions) + " |"
     sep = "|:---|:---:|:---:|:---:|:---:|" + "|".join([":---:" for _ in versions]) + "|"
